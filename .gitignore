@@ -1,0 +1,10 @@
+.env
+*__pycache__*
+*.sublime-project
+*.sublime-workspace
+main.py
+endpoints/admin.py
+models
+endpoints
+/extensions
+Dockerfile

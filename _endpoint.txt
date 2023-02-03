@@ -1,0 +1,35 @@
+@api.route("/controller")
+class CONTROLLERController(Resource):
+    @api.marshal_list_with(api.models.get("RESTX_MODEL"), skip_none=True)
+    def get(self):
+        return models.MODEL.qry(request.args)
+
+    @api.marshal_with(api.models.get("RESTX_MODEL"), skip_none=True)
+    def post(self):
+        return models.MODEL.post(request.get_json())
+
+    @api.marshal_with(api.models.get("RESTX_MODEL"), skip_none=True)
+    def put(self):
+        return models.MODEL.put(request.get_json())
+
+    @api.marshal_with(api.models.get("RESTX_MODEL"), skip_none=True)
+    def patch(self):
+        return models.MODEL.patch(request.get_json())
+
+
+@api.route("/controller/<controller_id>")
+class BaseCONTROLLERController(Resource):
+    @api.marshal_with(api.models.get("RESTX_MODEL"), skip_none=True)
+    def get(self, controller_id):
+        return models.MODEL.objects.get(id=controller_id).to_json()
+
+    @api.marshal_with(api.models.get("RESTX_MODEL"), skip_none=True)
+    def put(self, controller_id):
+        return models.MODEL.put({"id": controller_id, **request.get_json()})
+
+    @api.marshal_with(api.models.get("RESTX_MODEL"), skip_none=True)
+    def patch(self, controller_id):
+        return models.MODEL.patch({"id": controller_id, **request.get_json()})
+
+    def delete(self, controller_id):
+        return models.MODEL.get(id=controller_id).delete()

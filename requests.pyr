@@ -1,0 +1,14 @@
+# http://docs.python-requests.org/en/master/user/quickstart/
+
+env_file = ''
+
+###env
+url = "http://localhost:5000/api/{}"
+###env
+
+get(url.format("story?$include=chapters,chapters__choices"))
+get(url.format("chapter"))
+post(url.format("choice"), json={
+  "text": "hono"
+})
+

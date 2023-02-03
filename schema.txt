@@ -1,0 +1,18 @@
+table choice {
+    text varchar
+    chapter varchar
+}
+
+table chapter {
+    name varchar
+    image_url varchar
+    choices [ref: < choice.id]
+    content varchar
+}
+
+table story {
+    name varchar
+    image_url varchar
+    chapters [ref: < chapter.id]
+}
+
