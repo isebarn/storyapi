@@ -5,6 +5,7 @@ from io import BytesIO
 
 # Third party imports
 from flask import Flask
+from flask import redirect
 from flask import request
 from flask_restx import Namespace
 from flask_restx.fields import String
@@ -24,7 +25,7 @@ from extensions.aws_s3.methods import upload_file
 from extensions.aws_s3.methods import delete_object
 
 
-api = Namespace("aws_s3/images")
+api = Namespace("api/aws_s3/images")
 
 
 @api.route("/image/<filename>")
@@ -35,9 +36,9 @@ class File(Resource):
     )
 
     def get(self, filename):
-        return generate_presigned_url(
+        return redirect(generate_presigned_url(
             "{}/{}".format(filename, request.args.get("size", "original"))
-        )
+        ))
 
     @api.expect(image_upload_parser)
     def post(self, filename):

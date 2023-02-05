@@ -25,7 +25,7 @@ api = Api(app)
 api.add_namespace(_api)
 
 for extension in api_list:
-	api.add_namespace(extension)
+    api.add_namespace(extension)
 
 
 @api.errorhandler(DoesNotExist)

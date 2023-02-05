@@ -4,6 +4,7 @@ env_file = ''
 
 ###env
 url = "http://localhost:5000/api/{}"
+aws = "http://localhost:5000/aws_s3/{}"
 ###env
 
 get(url.format("story?$include=chapters,chapters__choices"))
@@ -12,3 +13,6 @@ post(url.format("choice"), json={
   "text": "hono"
 })
 
+
+
+post(aws.format("image/sambo"), streamed='/home/david/bale.jpg')

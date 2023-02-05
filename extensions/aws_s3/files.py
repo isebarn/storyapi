@@ -21,7 +21,7 @@ from extensions.aws_s3.methods import upload_file
 from extensions.aws_s3.methods import delete_object
 
 
-api = Namespace("aws_s3/files")
+api = Namespace("api/aws_s3/files")
 
 
 @api.route("/bucket_search")

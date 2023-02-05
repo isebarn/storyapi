@@ -460,7 +460,7 @@ class Chapter(Extended):
     meta = {'queryset_class': ChapterQuerySet}
 
     name = StringField()
-    image_url = StringField()
+    image = StringField()
     choices = ListField(ReferenceField(Choice))
     content = StringField()
 
@@ -469,7 +469,7 @@ class Story(Extended):
     meta = {'queryset_class': StoryQuerySet}
 
     name = StringField()
-    image_url = StringField()
+    image = StringField()
     chapters = ListField(ReferenceField(Chapter))
 
 
