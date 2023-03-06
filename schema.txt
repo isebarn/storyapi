@@ -1,3 +1,8 @@
+table layout {
+    name varchar
+    structure dict
+}
+
 table choice {
     text varchar
     chapter varchar
@@ -7,6 +12,7 @@ table chapter {
     name varchar
     image_url varchar
     choices [ref: < choice.id]
+    struct dict
     content varchar
 }
 

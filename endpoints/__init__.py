@@ -71,15 +71,55 @@ class Resource(_Resource):
 
 
 api = Namespace("api", description="")
-# choice_base = api.model("choice_base", models.Choice.base())
-# choice_reference = api.model("choice_reference", models.Choice.reference())
-# choice_full = api.model("choice", models.Choice.model(api))
-# chapter_base = api.model("chapter_base", models.Chapter.base())
-# chapter_reference = api.model("chapter_reference", models.Chapter.reference())
-# chapter_full = api.model("chapter", models.Chapter.model(api))
-# story_base = api.model("story_base", models.Story.base())
-# story_reference = api.model("story_reference", models.Story.reference())
-# story_full = api.model("story", models.Story.model(api))
+layout_base = api.model("layout_base", models.Layout.base())
+layout_reference = api.model("layout_reference", models.Layout.reference())
+layout_full = api.model("layout", models.Layout.model(api))
+choice_base = api.model("choice_base", models.Choice.base())
+choice_reference = api.model("choice_reference", models.Choice.reference())
+choice_full = api.model("choice", models.Choice.model(api))
+chapter_base = api.model("chapter_base", models.Chapter.base())
+chapter_reference = api.model("chapter_reference", models.Chapter.reference())
+chapter_full = api.model("chapter", models.Chapter.model(api))
+story_base = api.model("story_base", models.Story.base())
+story_reference = api.model("story_reference", models.Story.reference())
+story_full = api.model("story", models.Story.model(api))
+
+
+@api.route("/layout")
+class LayoutController(Resource):
+    #@api.marshal_list_with(api.models.get("layout"), skip_none=True)
+    def get(self):
+        return models.Layout.qry(request.args)
+
+    #@api.marshal_with(api.models.get("layout"), skip_none=True)
+    def post(self):
+        return models.Layout.post(request.get_json())
+
+    #@api.marshal_with(api.models.get("layout"), skip_none=True)
+    def put(self):
+        return models.Layout.put(request.get_json())
+
+    #@api.marshal_with(api.models.get("layout"), skip_none=True)
+    def patch(self):
+        return models.Layout.patch(request.get_json())
+
+
+@api.route("/layout/<layout_id>")
+class BaseLayoutController(Resource):
+    #@api.marshal_with(api.models.get("layout"), skip_none=True)
+    def get(self, layout_id):
+        return models.Layout.objects.get(id=layout_id).to_json()
+
+    #@api.marshal_with(api.models.get("layout"), skip_none=True)
+    def put(self, layout_id):
+        return models.Layout.put({"id": layout_id, **request.get_json()})
+
+    #@api.marshal_with(api.models.get("layout"), skip_none=True)
+    def patch(self, layout_id):
+        return models.Layout.patch({"id": layout_id, **request.get_json()})
+
+    def delete(self, layout_id):
+        return models.Layout.get(id=layout_id).delete()
 
 
 @api.route("/choice")
@@ -121,19 +161,19 @@ class BaseChoiceController(Resource):
 
 @api.route("/chapter")
 class ChapterController(Resource):
-    #@api.marshal_list_with(api.models.get("chapter"), skip_none=True)
+    ##@api.marshal_list_with(api.models.get("chapter"), skip_none=True)
     def get(self):
         return models.Chapter.qry(request.args)
 
-    #@api.marshal_with(api.models.get("chapter"), skip_none=True)
+    ##@api.marshal_with(api.models.get("chapter"), skip_none=True)
     def post(self):
         return models.Chapter.post(request.get_json())
 
-    #@api.marshal_with(api.models.get("chapter"), skip_none=True)
+    ##@api.marshal_with(api.models.get("chapter"), skip_none=True)
     def put(self):
         return models.Chapter.put(request.get_json())
 
-    #@api.marshal_with(api.models.get("chapter"), skip_none=True)
+    ##@api.marshal_with(api.models.get("chapter"), skip_none=True)
     def patch(self):
         return models.Chapter.patch(request.get_json())
 
@@ -187,7 +227,6 @@ class BaseStoryController(Resource):
 
     #@api.marshal_with(api.models.get("story"), skip_none=True)
     def patch(self, story_id):
-        import pdb; pdb.set_trace()  # breakpoint 6f94b4d0 //
         return models.Story.patch({"id": story_id, **request.get_json()})
 
     def delete(self, story_id):

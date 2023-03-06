@@ -36,9 +36,11 @@ class File(Resource):
     )
 
     def get(self, filename):
-        return redirect(generate_presigned_url(
-            "{}/{}".format(filename, request.args.get("size", "original"))
-        ))
+        return redirect(
+            generate_presigned_url(
+                "{}/{}".format(filename, request.args.get("size", "original"))
+            )
+        )
 
     @api.expect(image_upload_parser)
     def post(self, filename):

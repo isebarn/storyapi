@@ -36,9 +36,11 @@ from flask_restx.fields import String
 from flask_restx.fields import Boolean
 from flask_restx.fields import Raw
 
+from models.query_sets import LayoutQuerySet
 from models.query_sets import ChoiceQuerySet
 from models.query_sets import ChapterQuerySet
 from models.query_sets import StoryQuerySet
+
 ## EXTRA
 
 
@@ -315,7 +317,6 @@ class Extended(Document, Base):
     @classmethod
     def get(cls, *args, **kwargs):
         def recursively_query(model, fields, search, root=False):
-
             if fields == "id__in":
                 return {fields: search}
 
@@ -342,7 +343,6 @@ class Extended(Document, Base):
 
         filters = {}
         for query, search in kwargs.items():
-
             if query.startswith("$"):
                 continue
 
@@ -377,7 +377,8 @@ class Extended(Document, Base):
             return cls.objects.default(cls, filters)
 
         else:
-            return cls.fetch(filters)
+            asd = cls.fetch(filters)
+            return asd
 
     @classmethod
     def fetch(cls, filters):
@@ -449,47 +450,55 @@ class Extended(Document, Base):
 class EmbeddedDocument(_EmbeddedDocument, Base):
     meta = {"abstract": True, "allow_inheritance": True}
 
+
+class Layout(Extended):
+    meta = {"queryset_class": LayoutQuerySet}
+
+    name = StringField()
+    structure = DictField()
+
+
 class Choice(Extended):
-    meta = {'queryset_class': ChoiceQuerySet}
+    meta = {"queryset_class": ChoiceQuerySet}
 
     text = StringField()
-    chapter = ReferenceField('Chapter')
+    chapter = ReferenceField("Chapter")
 
 
 class Chapter(Extended):
-    meta = {'queryset_class': ChapterQuerySet}
+    meta = {"queryset_class": ChapterQuerySet}
 
     name = StringField()
-    image = StringField()
+    image_url = StringField()
     choices = ListField(ReferenceField(Choice))
+    struct = DictField()
     content = StringField()
 
 
 class Story(Extended):
-    meta = {'queryset_class': StoryQuerySet}
+    meta = {"queryset_class": StoryQuerySet}
 
     name = StringField()
-    image = StringField()
+    image_url = StringField()
     chapters = ListField(ReferenceField(Chapter))
 
 
-
 # def config():
-    # signals.pre_save.connect(Class.pre_save, sender=Class)
-    # signals.post_save.connect(Class.post_save, sender=Class)
+# signals.pre_save.connect(Class.pre_save, sender=Class)
+# signals.post_save.connect(Class.post_save, sender=Class)
 
-    # seed
-    # logging.info("Seeding database")
-    # seed = load(open("models/seed.json"))
+# seed
+# logging.info("Seeding database")
+# seed = load(open("models/seed.json"))
 
-    # helper method to remove "_id" and "_cls" so I can compare json objects
-    # from the db
-    # def remove_meta_from_dict_item(item):
-    #     item.pop("_cls")
-    #     item.pop("_id")
-    #     for key, value in item.items():
-    #         if isinstance(value, dict):
-    #             remove_meta_from_dict_item(value)
+# helper method to remove "_id" and "_cls" so I can compare json objects
+# from the db
+# def remove_meta_from_dict_item(item):
+#     item.pop("_cls")
+#     item.pop("_id")
+#     for key, value in item.items():
+#         if isinstance(value, dict):
+#             remove_meta_from_dict_item(value)
 
 
 # config()
