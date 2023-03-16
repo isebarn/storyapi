@@ -5,6 +5,7 @@ table layout {
 
 table choice {
     text varchar
+    name varchar
     chapter varchar
 }
 

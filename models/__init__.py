@@ -462,6 +462,7 @@ class Choice(Extended):
     meta = {"queryset_class": ChoiceQuerySet}
 
     text = StringField()
+    name = StringField()
     chapter = ReferenceField("Chapter")
 
 
